@@ -13,9 +13,19 @@
         android:theme="@style/Theme.Ciudades"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".VisualizarCap"
+            android:exported="false"
+            android:label="@string/title_activity_visualizar_cap"
+            android:theme="@style/Theme.Ciudades" />
+        <activity
+            android:name=".BorrarCap"
+            android:exported="false"
+            android:label="@string/title_activity_borrar_cap"
+            android:theme="@style/Theme.Ciudades" />
+        <activity
+            android:name=".CargarCap"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_cargar_cap"
             android:theme="@style/Theme.Ciudades">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
