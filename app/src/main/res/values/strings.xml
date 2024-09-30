@@ -3,4 +3,5 @@
     <string name="title_activity_cargar_cap">CargarCap</string>
     <string name="title_activity_borrar_cap">BorrarCap</string>
     <string name="title_activity_visualizar_cap">VisualizarCap</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

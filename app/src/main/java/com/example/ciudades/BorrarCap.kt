@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.ciudades.data.AppDatabase
@@ -29,19 +28,17 @@ class BorrarCap : ComponentActivity() {
         setContent {
             CiudadesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DeleteCapitalForm(
+                    DeleteCityForm(
                         modifier = Modifier.padding(innerPadding),
                         onDeleteByName = { name ->
                             lifecycleScope.launch {
-                                val capital = capitalDao.getCapitalByName(name)
-                                if (capital != null) {
-                                    capitalDao.deleteCapital(capital)
-                                }
+                                val capital = capitalDao.getCityByName(name)
+                                capital?.let { capitalDao.deleteCity(it) }
                             }
                         },
                         onDeleteByCountry = { country ->
                             lifecycleScope.launch {
-                                capitalDao.deleteCapitalsByCountry(country)
+                                capitalDao.deleteCitiesByCountry(country)
                             }
                         }
                     )
@@ -52,7 +49,7 @@ class BorrarCap : ComponentActivity() {
 }
 
 @Composable
-fun DeleteCapitalForm(
+fun DeleteCityForm(
     modifier: Modifier = Modifier,
     onDeleteByName: (String) -> Unit,
     onDeleteByCountry: (String) -> Unit
@@ -78,7 +75,7 @@ fun DeleteCapitalForm(
         TextField(
             value = country,
             onValueChange = { country = it },
-            label = { Text("Nombre del País para Borrar Todas las Capitales") },
+            label = { Text("País para Borrar Capitales") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -88,16 +85,5 @@ fun DeleteCapitalForm(
         ) {
             Text("Borrar Todas las Capitales por País")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DeleteCapitalFormPreview() {
-    CiudadesTheme {
-        DeleteCapitalForm(
-            onDeleteByName = { },
-            onDeleteByCountry = { }
-        )
     }
 }

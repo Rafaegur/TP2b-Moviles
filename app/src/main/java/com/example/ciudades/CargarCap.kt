@@ -30,13 +30,24 @@ class CargarCap : ComponentActivity() {
 
         setContent {
             CiudadesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CapitalForm(
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    snackbarHost = { SnackbarHost(snackbarHostState) }
+                ) { innerPadding ->
+                    CityForm(
                         modifier = Modifier.padding(innerPadding),
                         onSave = { country, name, population ->
-                            // Llamamos a la coroutine aquí
                             lifecycleScope.launch {
-                                capitalDao.insertCapital(Capital(country = country, name = name, population = population))
+                                if (country.isNotBlank() && name.isNotBlank() && population > 0) {
+                                    capitalDao.insertCity(
+                                        Capital(country = country, capitalName = name, population = population)
+                                    )
+                                    snackbarHostState.showSnackbar("Capital guardada con éxito")
+                                } else {
+                                    snackbarHostState.showSnackbar("Error: Verifica los campos")
+                                }
                             }
                         }
                     )
@@ -47,7 +58,7 @@ class CargarCap : ComponentActivity() {
 }
 
 @Composable
-fun CapitalForm(
+fun CityForm(
     modifier: Modifier = Modifier,
     onSave: (String, String, Int) -> Unit
 ) {
@@ -79,7 +90,10 @@ fun CapitalForm(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { onSave(country, name, population.toIntOrNull() ?: 0) },
+            onClick = {
+                val populationValue = population.toIntOrNull() ?: 0
+                onSave(country, name, populationValue)
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Guardar Capital")

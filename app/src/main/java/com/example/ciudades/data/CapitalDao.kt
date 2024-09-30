@@ -5,23 +5,23 @@ import androidx.room.*
 @Dao
 interface CapitalDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCapital(capital: Capital)
+    suspend fun insertCity(capital: Capital)
 
     @Update
-    suspend fun updateCapital(capital: Capital)
+    suspend fun updateCity(capital: Capital)
 
     @Delete
-    suspend fun deleteCapital(capital: Capital)
+    suspend fun deleteCity(capital: Capital)
 
-    @Query("SELECT * FROM capital_table WHERE name = :name")
-    suspend fun getCapitalByName(name: String): Capital?
+    @Query("SELECT * FROM city_table WHERE capitalName = :name")
+    suspend fun getCityByName(name: String): Capital?
 
-    @Query("DELETE FROM capital_table WHERE country = :country")
-    suspend fun deleteCapitalsByCountry(country: String)
+    @Query("DELETE FROM city_table WHERE country = :country")
+    suspend fun deleteCitiesByCountry(country: String)
 
-    @Query("SELECT * FROM capital_table")
-    suspend fun getAllCapitals(): List<Capital>
+    @Query("SELECT * FROM city_table")
+    suspend fun getAllCities(): List<Capital>
 
-    @Query("DELETE FROM capital_table")
-    suspend fun deleteAllCapitals()
+    @Query("DELETE FROM city_table")
+    suspend fun clearAllCities()
 }

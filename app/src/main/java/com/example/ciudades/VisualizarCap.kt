@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.ciudades.data.AppDatabase
@@ -16,7 +15,6 @@ import com.example.ciudades.data.Capital
 import com.example.ciudades.data.CapitalDao
 import com.example.ciudades.ui.theme.CiudadesTheme
 import kotlinx.coroutines.launch
-import androidx.navigation.NavController
 
 class VisualizarCap : ComponentActivity() {
     private lateinit var capitalDao: CapitalDao
@@ -33,20 +31,18 @@ class VisualizarCap : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     var capitalState by remember { mutableStateOf<Capital?>(null) }
 
-                    // Pasamos la lambda onSearch que actualiza el estado capitalState
-                    SearchCapitalForm(
+                    SearchCityForm(
                         modifier = Modifier.padding(innerPadding),
                         onSearch = { name ->
                             lifecycleScope.launch {
-                                val capital = capitalDao.getCapitalByName(name)
+                                val capital = capitalDao.getCityByName(name)
                                 capitalState = capital
                             }
                         }
                     )
 
-                    // Mostrar detalles de la capital si el estado no es nulo
                     capitalState?.let { capital ->
-                        CapitalDetails(capital)
+                        CityDetails(capital)
                     }
                 }
             }
@@ -55,7 +51,7 @@ class VisualizarCap : ComponentActivity() {
 }
 
 @Composable
-fun SearchCapitalForm(
+fun SearchCityForm(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit
 ) {
@@ -79,18 +75,11 @@ fun SearchCapitalForm(
 }
 
 @Composable
-fun CapitalDetails(capital: Capital) {
+fun CityDetails(capital: Capital) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = "País: ${capital.country}")
-        Text(text = "Capital: ${capital.name}")
+        Text(text = "Capital: ${capital.capitalName}")
         Text(text = "Población: ${capital.population}")
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SearchCapitalFormPreview() {
-    CiudadesTheme {
-        SearchCapitalForm(onSearch = { })
-    }
-}
